@@ -1,0 +1,46 @@
+---
+
+tasks:
+  - name: install packages
+    apt: name={{item}} state=present
+
+    with_items:
+      - python
+      - python-dev
+      - python-pip
+      - mysql-server
+      - redis-server
+      - nginx
+      # below two special version is for installing node
+      - gcc-4.9.4
+      - g++-4.9.4
+
+
+  - name: link gcc to gcc-4.9.4
+    shell: if [[ `gcc --version` != "4.9.4" ]]; then rm `which gcc`; link -s /usr/bin/gcc `which gcc-4.9.4` fi
+
+  - name: link g++ to g++-4.9.4
+    shell: if [[ `g++ --version` != "4.9.4" ]]; then rm `which g++`; link -s /usr/bin/g++ `which g++-4.9.4` fi
+
+
+  - name: fetch the node release src && compile and install it
+    pass
+
+  - name: copy pip requirement.txt to server
+    cp: src={{pip_packages_requirement}} dest=/tmp/{{pip_packages_requirement}}
+
+  - name: install pip packages
+    shell: pip install -r {{pip_packages_requirement}}
+
+  - name: conf nginx
+    cp: src={{item}} dest=/etc/nginx/sites-available/{{item}}
+    with_items: nginx_conf_files
+    notify: link nginx confs available folder to enable folder
+
+  - name: conf mysql
+    pass
+
+  - name: conf redis
+    pass
+
+

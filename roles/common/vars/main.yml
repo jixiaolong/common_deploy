@@ -1,0 +1,18 @@
+---
+
+pip_packages_requirement: requirement.txt
+nginx_conf_files:
+  - web.conf
+
+nginx_servers_confs:
+  beinong:
+    server_name: envsense.cn
+    static_path: "/home/env1/env_monitor/web/icrating/icrating/assets/"
+    proxy_pass_url: "http://127.0.0.1:9002"
+    listen_port: 80
+
+  wukuang:
+    server_name: wukuang.envsense.cn
+    static_path: "/home/env1/env_monitor/web/icrating/icrating/assets/"
+    proxy_pass_url: "http://127.0.0.1:9003"
+    listen_port: 80

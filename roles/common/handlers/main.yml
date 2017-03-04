@@ -1,0 +1,6 @@
+---
+
+- name: link nginx confs available to enable
+  file: src=/etc/nginx/sites-available/{{item}} dest=/etc/nginx/sites-enabled/{{item}} state=link
+  with_items: nginx_conf_files
+

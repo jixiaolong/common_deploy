@@ -1,0 +1,21 @@
+---
+
+# the deploy entry
+#
+- hosts: web
+  remote_user: env1
+
+  pre_tasks:
+    - name: install add-apt-repository
+      apt-get: name={{item}} state=present
+      with_items:
+        - python-software-properties
+        - software-properties-common
+
+    - name: app apt repo
+      shell: sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+
+  roles:
+    - common
+    - code_deploy
+    - test
